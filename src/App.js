@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import NameCharacter from './components/Name';
+import PokemonList from './components/PokemonList';
 
 class App extends Component {
   constructor(props){
@@ -12,36 +12,39 @@ class App extends Component {
     };
   }
   componentDidMount() {
-		fetch ('http://pokeapi.salestock.net/api/v2/pokemon/')
+    for (let i = 1; i <= 25; i++) {
+		fetch (`https://pokeapi.co/api/v2/pokemon/${i}/`)
 		.then(request => request.json())
 		.then(json => {
 			this.setState({
 				pokemons: json,
 			});
-			console.log(this.state.pokemons.results[0].name);
+			// console.log(pokemons);
 		});
 	}
-//   paintPokemons() {
-// 		const listName = this.state.pokemons.filter(item => item.name.toLowerCase().includes(this.state.valorInput));
-//
-// 		return listName.map(item => {
-// 			return (<li>
-// 			<NameCharacter name={item.name} />
-// 			// <img src={item.image} className="image" />
-// 			// <div className="container__info">
-// 			// <div className={`icon house_${item.house.toLowerCase()}`}></div>
-// 			// <div className={`icon alive_${item.alive? 'live': 'dead'.toLowerCase()}`}></div>
-// 			// </div>
-// 			</li>)
-// 		});
-// }
-// handleChange(event){
-//   const searchCharacters = event.target.value
-//   //console.log(writting)
-//   this.setState({
-//     valorInput: searchCharacters.toLowerCase()
-//   });
-// }
+}
+  paintPokemons() {
+		let listPokemons = this.state.pokemons;
+
+    listPokemons = listPokemons.filter(element => element.name.toLowerCase().includes(this.state.valorInput.toLowerCase())
+    );
+
+    listPokemons = listPokemons.sort(function (a, b){
+      return a.id - b.id;
+    });
+
+			return (<section className="container">
+         <div></div>
+        <PokemonList poke={listPokemons} observer={this.observer} />
+      </section>)
+		};
+
+handleChange(event){
+  const searchCharacters = event.target.value
+  this.setState({
+    valorInput: searchCharacters.toLowerCase()
+  });
+}
   render() {
     return (
       <div className="App">
@@ -51,11 +54,11 @@ class App extends Component {
               <div className="App-title">
 
               </div>
-              <input className="search" placeholder=" Encuentra tu Pokémon favorito"></input>
+              <input className="search" placeholder=" Encuentra tu Pokémon favorito" onChange={this.handleClick}></input>
             </header>
             <main>
             <div className="Container-page">
-    					<ul className="Container-pokemons"></ul>
+    					<ul className="Container-pokemons">{this.paintPokemons()}</ul>
     				</div>
             </main>
           </div>
