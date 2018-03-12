@@ -35,7 +35,7 @@ handleChange(event){
 
     listPokemons = listPokemons.filter(element => element.name.toLowerCase().includes(this.state.valorInput.toLowerCase())
     );
-    console.log(this.state.pokemons)
+
 
     listPokemons = listPokemons.sort(function (a, b){
       return a.id - b.id;
@@ -57,7 +57,7 @@ handleChange(event){
               <div className="App-title">
 
               </div>
-              <input className="search" placeholder=" Encuentra tu Pokémon favorito" onChange={this.handleClick}></input>
+              <input className="search" placeholder=" Encuentra tu Pokémon favorito" onChange={this.handleChange}></input>
             </header>
             <main>
             <div className="Container__page">
